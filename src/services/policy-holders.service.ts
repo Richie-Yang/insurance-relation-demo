@@ -2,7 +2,12 @@ import { PolicyHolders } from '../models';
 import { policyHoldersRepository } from '../repositories';
 import { policyHoldersService } from '.';
 
-export { getParentHolder, getChildHolders, createRandomHolders };
+export {
+  getParentHolder,
+  getChildHolders,
+  createRandomHolders,
+  nodeBreathFirstSearch,
+};
 
 const MAX_BRANCHES = 2;
 
@@ -26,13 +31,27 @@ async function getChildHolders(code: string) {
   const maxLevel = 4;
   const result = {
     ...node,
-    l: [leftNode, ...(await _bfs(leftNode, currentLevel, maxLevel))],
-    r: [rightNode, ...(await _bfs(rightNode, currentLevel, maxLevel))],
+    l: [
+      leftNode,
+      ...(await policyHoldersService.nodeBreathFirstSearch(
+        leftNode,
+        currentLevel,
+        maxLevel
+      )),
+    ],
+    r: [
+      rightNode,
+      ...(await policyHoldersService.nodeBreathFirstSearch(
+        rightNode,
+        currentLevel,
+        maxLevel
+      )),
+    ],
   };
   return result;
 }
 
-async function _bfs(
+async function nodeBreathFirstSearch(
   node: PolicyHolders,
   currentLevel: number,
   maxLevel: number
@@ -58,7 +77,6 @@ async function _bfs(
     }
     if (currentLevel >= maxLevel) break;
   }
-
   return result;
 }
 
