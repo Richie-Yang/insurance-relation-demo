@@ -1,5 +1,6 @@
 import { PolicyHolders } from '../models';
 import { policyHoldersRepository } from '../repositories';
+import { policyHoldersService } from '.';
 
 export { getParentHolder, getChildHolders, createRandomHolders };
 
@@ -10,7 +11,7 @@ async function getParentHolder(code: string) {
     where: { code },
   });
   if (!node) throw new Error('policy holder not found');
-  return getChildHolders(node.introducer_code);
+  return policyHoldersService.getChildHolders(node.introducer_code);
 }
 
 async function getChildHolders(code: string) {
