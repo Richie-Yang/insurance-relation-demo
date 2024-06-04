@@ -1,0 +1,20 @@
+# @name create
+POST {{endpoint}}/api/policyholders
+Content-Type: application/json
+
+{
+  "maxCount": 30
+}
+###
+
+# @name getPolicyholder
+GET {{endpoint}}/api/policyholders?code=0000000078
+Content-Type: application/json
+
+###
+
+# @name getParentHolder
+GET {{endpoint}}/api/policyholders/0000000078/top
+Content-Type: application/json
+
+###
